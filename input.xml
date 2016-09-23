@@ -7,4 +7,17 @@
     <author bibtex="ej;dj" aux="djdkd">Edward Sujono</author>
     <author bibtex="ej;dj" aux="djdkd">Edward Sujono</author>
 
+
+    <article mdate="2011-01-11" key="journal/edward">
+            <author>Edward Sujono</author>
+            <title>Edward Xi Ribet</title>
+            <pages>10-20</pages>
+            <year>2017</year>
+            <volume>20</volume>
+            <journal>Acta -inf</journal>
+            <url>db/joournam/edward</url>
+            <ee>http://edward.sujono.com</ee>
+    </article>
+
+
 </root>
