@@ -9,6 +9,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 
+import static com.sun.org.apache.xerces.internal.impl.Constants.JDK_ENTITY_EXPANSION_LIMIT;
+
 
 public class Main {
 
@@ -30,6 +32,7 @@ public class Main {
     public static void startReadDocument() throws Exception{
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         File file = new File("dblp.xml");
+        dbFactory.setAttribute(JDK_ENTITY_EXPANSION_LIMIT, "0");
         try {
             DocumentBuilder documentBuilder = dbFactory.newDocumentBuilder();
             //this is intentionally create DOM Tree which means accessing any element first have the same worst complexity

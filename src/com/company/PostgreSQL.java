@@ -1,7 +1,8 @@
 package com.company;
 
 import java.sql.*;
-import java.util.ArrayList;
+import java.util.*;
+import java.util.Date;
 
 
 /**
@@ -12,6 +13,7 @@ public class PostgreSQL {
     private Connection connection;
     private Statement statement;
     private PreparedStatement preparedStatement;
+    private static long counter= 0;
 
     //this is additional PreparedStatement if we are using SAXParsing
     private PreparedStatement preparedStatementForAuthor;
@@ -58,6 +60,8 @@ public class PostgreSQL {
     public void addAuthorField(String authorName) throws Exception{
         preparedStatementForAuthor.setString(1,authorName);
         preparedStatementForAuthor.addBatch();
+        counter++;
+        if(counter % 1000 == 0) System.out.println(new Date().toString()+" authorName: "+authorName);
     }
 
     public void executeBatch()throws Exception{
@@ -92,7 +96,8 @@ public class PostgreSQL {
         preparedStatement.setBoolean(11,is_masterthesis);
         preparedStatement.setBoolean(12,is_inproceedings);
         preparedStatement.addBatch();
-
+        counter++;
+        if(counter % 1000 == 0) System.out.println(new Date().toString()+" pubKey: "+pubKey+" title: "+title+" year: "+year+" journal: "+journal);
     }
 
     public void addFieldPubKeyForPublicationElement(String s) throws Exception{
@@ -160,6 +165,7 @@ public class PostgreSQL {
 
     public void addBatch() throws Exception{
         preparedStatement.addBatch();
+        counter++;
     }
 
 
