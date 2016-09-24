@@ -23,7 +23,7 @@ public class PostgreSQL {
         try {
             Class.forName("org.postgresql.Driver");
             Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/db"
-                    ,"postgres","postgres");
+                    ,"postgres","1234567890");
             connection.setAutoCommit(false);
             System.out.println("database is open successfully");
             this.connection = connection;
@@ -36,9 +36,9 @@ public class PostgreSQL {
     }
 
     //general crappy insert without optimization
-    public void createGeneralStatement(String sql) throws Exception{
+    public void createDistinctAuthorStatement() throws Exception{
         statement = connection.createStatement();
-        statement.execute(sql);
+        statement.execute("INSERT INTO author (NAME) SELECT DISTINCT(NAME) from raw_author");
      }
 
      public void closeStatement() throws  Exception{
@@ -57,7 +57,7 @@ public class PostgreSQL {
      //insert with optimization using PreparedStatement
     //insert for Author table
     public void createGeneralPreparedStatementAuthor() throws Exception{
-        preparedStatementForAuthor = connection.prepareStatement("INSERT INTO author (name) VALUES (?)");
+        preparedStatementForAuthor = connection.prepareStatement("INSERT INTO raw_author (name) VALUES (?)");
     }
 
     public void addAuthorField(String authorName) throws Exception{
