@@ -24,7 +24,13 @@ public class MainSAX {
             saxParser.parse(file,handler);
             postgreSQL.executeBatch();
             postgreSQL.commitChanges();
+            postgreSQL.closeCOnnection();
         }catch(Exception e){
+            try {
+                postgreSQL.closeCOnnection();
+            } catch (Exception e1) {
+                e1.printStackTrace();
+            }
             e.printStackTrace();
         }
     }

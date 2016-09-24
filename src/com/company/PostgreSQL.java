@@ -23,7 +23,7 @@ public class PostgreSQL {
         try {
             Class.forName("org.postgresql.Driver");
             Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/db"
-                    ,"postgres","1234567890");
+                    ,"postgres","postgres");
             connection.setAutoCommit(false);
             System.out.println("database is open successfully");
             this.connection = connection;
@@ -47,9 +47,12 @@ public class PostgreSQL {
 
      public void commitChanges() throws Exception{
          connection.commit();
-         connection.close();
      }
 
+
+     public void closeCOnnection() throws  Exception{
+         connection.close();
+     }
 
      //insert with optimization using PreparedStatement
     //insert for Author table
@@ -61,7 +64,11 @@ public class PostgreSQL {
         preparedStatementForAuthor.setString(1,authorName);
         preparedStatementForAuthor.addBatch();
         counter++;
-        if(counter % 1000 == 0) System.out.println(new Date().toString()+" authorName: "+authorName);
+        if(counter % 1000 == 0){
+            System.out.println(new Date().toString()+" authorName: "+authorName);
+            preparedStatementForAuthor.executeBatch();
+            commitChanges();
+        }
     }
 
     public void executeBatch()throws Exception{
@@ -97,7 +104,7 @@ public class PostgreSQL {
         preparedStatement.setBoolean(12,is_inproceedings);
         preparedStatement.addBatch();
         counter++;
-        if(counter % 1000 == 0) System.out.println(new Date().toString()+" pubKey: "+pubKey+" title: "+title+" year: "+year+" journal: "+journal);
+        if(counter %1000 == 0) System.out.println(new Date().toString()+" pubKey: "+pubKey+" title: "+title+" year: "+year+" journal: "+journal);
     }
 
     public void addFieldPubKeyForPublicationElement(String s) throws Exception{
@@ -166,6 +173,11 @@ public class PostgreSQL {
     public void addBatch() throws Exception{
         preparedStatement.addBatch();
         counter++;
+        if(counter %1000 == 0){
+            System.out.println(new Date().toString()+" Article");
+            preparedStatement.executeBatch();
+            commitChanges();
+        }
     }
 
 

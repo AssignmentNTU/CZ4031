@@ -60,7 +60,11 @@ public class Main {
     public static void startReadAuthorElement(Document doc) throws  Exception{
         NodeList nodeList = doc.getElementsByTagName("author");
         postgreSQL.createGeneralPreparedStatementAuthor();
-        for(int i = 0 ; i < nodeList.getLength() ; i++){
+        int size = nodeList.getLength();
+        if(size > 100){
+            size = 100;
+        }
+        for(int i = 0 ; i < size ; i++){
             Node node = nodeList.item(i);
             postgreSQL.addAuthorField(node.getTextContent());
         }
@@ -72,7 +76,9 @@ public class Main {
         //start to get article type
         NodeList nodeList = doc.getElementsByTagName(xmlElement);
         postgreSQL.createGeneralPreparedStatementPublication();
-        for(int i  = 0 ; i < nodeList.getLength() ; i++){
+        int size = nodeList.getLength();
+        if(size > 100) size = 100;
+        for(int i  = 0 ; i < size ; i++){
             Node node = nodeList.item(i);
             Element element  = (Element) node;
             NamedNodeMap attributes = node.getAttributes();
