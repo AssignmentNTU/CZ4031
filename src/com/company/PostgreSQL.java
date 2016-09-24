@@ -13,6 +13,9 @@ public class PostgreSQL {
     private Statement statement;
     private PreparedStatement preparedStatement;
 
+    //this is additional PreparedStatement if we are using SAXParsing
+    private PreparedStatement preparedStatementForAuthor;
+
 
     public PostgreSQL(){
         try {
@@ -49,15 +52,16 @@ public class PostgreSQL {
      //insert with optimization using PreparedStatement
     //insert for Author table
     public void createGeneralPreparedStatementAuthor() throws Exception{
-        preparedStatement = connection.prepareStatement("INSERT INTO author (name) VALUES (?)");
+        preparedStatementForAuthor = connection.prepareStatement("INSERT INTO author (name) VALUES (?)");
     }
 
     public void addAuthorField(String authorName) throws Exception{
-        preparedStatement.setString(1,authorName);
-        preparedStatement.addBatch();
+        preparedStatementForAuthor.setString(1,authorName);
+        preparedStatementForAuthor.addBatch();
     }
 
     public void executeBatch()throws Exception{
+        preparedStatementForAuthor.executeBatch();
         preparedStatement.executeBatch();
     }
 
@@ -75,7 +79,6 @@ public class PostgreSQL {
 
     throws Exception
     {
-
         preparedStatement.setString(1,pubKey);
         preparedStatement.setString(2,title);
         preparedStatement.setInt(3,year);
@@ -91,6 +94,74 @@ public class PostgreSQL {
         preparedStatement.addBatch();
 
     }
+
+    public void addFieldPubKeyForPublicationElement(String s) throws Exception{
+        preparedStatement.setString(1,s);
+    }
+
+    public void addFieldTitleForPublicationElement(String s) throws Exception{
+        preparedStatement.setString(2,s);
+    }
+
+    public void addFieldYearForPublicationElement(int year) throws Exception{
+        preparedStatement.setInt(3,year);
+    }
+
+    public void addFieldJournalForPublicationElement(String s) throws Exception{
+        preparedStatement.setString(4,s);
+    }
+
+    public void addFieldIsArticleForPublicationElement() throws Exception{
+        addFieldBoolean(true,false,false,false,false,false,false,false);
+    }
+
+    public void addFieldIsPhdThesisForPublicationElement() throws Exception{
+        addFieldBoolean(false,true,false,false,false,false,false,false);
+    }
+
+    public void addFieldIsBookForPublicationElement() throws Exception{
+        addFieldBoolean(false,false,true,false,false,false,false,false);
+    }
+
+    public void addFieldIsProceedingsForPublicationElement() throws Exception{
+        addFieldBoolean(false,false,false,true,false,false,false,false);
+    }
+
+
+    public void addFieldIsWebsiteForPublicationElement() throws Exception{
+        addFieldBoolean(false,false,false,false,true,false,false,false);
+    }
+
+
+    public void addFieldIsInCollectionsForPublicationElement() throws Exception{
+        addFieldBoolean(false,false,false,false,false,true,false,false);
+    }
+
+
+    public void addFieldIsMasterThesisForPublicationElement() throws Exception{
+        addFieldBoolean(false,false,false,false,false,false,true,false);
+    }
+
+    public void addFieldIsInProceedingsForPublicationElement() throws Exception{
+        addFieldBoolean(false,false,false,false,false,false,false,true);
+    }
+
+    public void addFieldBoolean(boolean is_article,boolean is_phdthesis,boolean is_book,boolean is_proceedings, boolean is_website,
+                               boolean is_incollection , boolean is_masterthesis , boolean is_inproceedings) throws Exception{
+        preparedStatement.setBoolean(5,is_article);
+        preparedStatement.setBoolean(6,is_phdthesis);
+        preparedStatement.setBoolean(7,is_book);
+        preparedStatement.setBoolean(8,is_proceedings);
+        preparedStatement.setBoolean(9,is_website);
+        preparedStatement.setBoolean(10,is_incollection);
+        preparedStatement.setBoolean(11,is_masterthesis);
+        preparedStatement.setBoolean(12,is_inproceedings);
+    }
+
+    public void addBatch() throws Exception{
+        preparedStatement.addBatch();
+    }
+
 
 
 }

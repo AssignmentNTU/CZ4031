@@ -29,7 +29,7 @@ public class Main {
 
     public static void startReadDocument() throws Exception{
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-        File file = new File("input.xml");
+        File file = new File("dblp.xml");
         try {
             DocumentBuilder documentBuilder = dbFactory.newDocumentBuilder();
             //this is intentionally create DOM Tree which means accessing any element first have the same worst complexity
@@ -43,7 +43,7 @@ public class Main {
             startReadPublicationElement(doc, PublicationType.PUBLICATION_TYPE.PHDTHESIS,"phdthesis");
             startReadPublicationElement(doc, PublicationType.PUBLICATION_TYPE.MASTERTHESIS,"masterthesis");
             startReadPublicationElement(doc, PublicationType.PUBLICATION_TYPE.WEBSITE,"www");
-            //startReadAuthorElement(doc);
+            startReadAuthorElement(doc);
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
         } catch (SAXException e) {
