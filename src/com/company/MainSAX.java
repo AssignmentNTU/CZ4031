@@ -12,7 +12,7 @@ import java.io.File;
 public class MainSAX {
 
     public static void main(String args[]){
-        File file = new File("input.xml");
+        File file = new File("dblp.xml");
         SAXParserFactory factory = SAXParserFactory.newInstance();
         PostgreSQL postgreSQL = new PostgreSQL();
 
@@ -24,6 +24,7 @@ public class MainSAX {
             saxParser.parse(file,handler);
             postgreSQL.executeBatch();
             postgreSQL.createDistinctAuthorStatement();
+            postgreSQL.createAuthoredStatement();
             postgreSQL.closeStatement();
             postgreSQL.commitChanges();
             postgreSQL.closeCOnnection();

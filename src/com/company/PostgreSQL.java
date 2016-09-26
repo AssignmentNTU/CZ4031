@@ -23,7 +23,7 @@ public class PostgreSQL {
         try {
             Class.forName("org.postgresql.Driver");
             Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/db"
-                    ,"postgres","1234567890");
+                    ,"postgres","postgres");
             connection.setAutoCommit(false);
             System.out.println("database is open successfully");
             this.connection = connection;
@@ -40,6 +40,16 @@ public class PostgreSQL {
         statement = connection.createStatement();
         statement.execute("INSERT INTO author (NAME) SELECT DISTINCT(NAME) from raw_author");
      }
+
+     public void createAuthoredStatement() throws Exception{
+         statement = connection.createStatement();
+         statement.execute
+                 ("INSERT INTO authored (AUTHOR_NAME,PUBLICATION_ID)\n" +
+                         "SELECT author.NAME,publication.PUBLICATION_ID\n" +
+                         "FROM author INNER JOIN publication on\n" +
+                         "author.NAME = publication.AUTHOR_NAME");
+     }
+
 
      public void closeStatement() throws  Exception{
         statement.close();
@@ -79,9 +89,9 @@ public class PostgreSQL {
 
     //insert into Publication table
     public void createGeneralPreparedStatementPublication() throws Exception{
-        preparedStatement = connection.prepareStatement("INSERT INTO publication(pubkey,title,year,journal,is_article," +
+        preparedStatement = connection.prepareStatement("INSERT INTO publication(pubkey,author_name,title,year,journal,is_article," +
                 "is_phdthesis,is_book,is_proceedings,is_website,is_incollection,is_masterthesis,is_inproceedings) VALUES " +
-                "(?,?,?,?,?,?,?,?,?,?,?,?)");
+                "(?,?,?,?,?,?,?,?,?,?,?,?,?)");
     }
 
     public void addPublicationField(String pubKey,String title,int year,String journal,boolean is_article
@@ -111,16 +121,20 @@ public class PostgreSQL {
         preparedStatement.setString(1,s);
     }
 
-    public void addFieldTitleForPublicationElement(String s) throws Exception{
+    public void addFieldAuthorNameForPublicationElement(String s) throws Exception{
         preparedStatement.setString(2,s);
     }
 
+    public void addFieldTitleForPublicationElement(String s) throws Exception{
+        preparedStatement.setString(3,s);
+    }
+
     public void addFieldYearForPublicationElement(int year) throws Exception{
-        preparedStatement.setInt(3,year);
+        preparedStatement.setInt(4,year);
     }
 
     public void addFieldJournalForPublicationElement(String s) throws Exception{
-        preparedStatement.setString(4,s);
+        preparedStatement.setString(5,s);
     }
 
     public void addFieldIsArticleForPublicationElement() throws Exception{
@@ -160,14 +174,14 @@ public class PostgreSQL {
 
     public void addFieldBoolean(boolean is_article,boolean is_phdthesis,boolean is_book,boolean is_proceedings, boolean is_website,
                                boolean is_incollection , boolean is_masterthesis , boolean is_inproceedings) throws Exception{
-        preparedStatement.setBoolean(5,is_article);
-        preparedStatement.setBoolean(6,is_phdthesis);
-        preparedStatement.setBoolean(7,is_book);
-        preparedStatement.setBoolean(8,is_proceedings);
-        preparedStatement.setBoolean(9,is_website);
-        preparedStatement.setBoolean(10,is_incollection);
-        preparedStatement.setBoolean(11,is_masterthesis);
-        preparedStatement.setBoolean(12,is_inproceedings);
+        preparedStatement.setBoolean(6,is_article);
+        preparedStatement.setBoolean(7,is_phdthesis);
+        preparedStatement.setBoolean(8,is_book);
+        preparedStatement.setBoolean(9,is_proceedings);
+        preparedStatement.setBoolean(10,is_website);
+        preparedStatement.setBoolean(11,is_incollection);
+        preparedStatement.setBoolean(12,is_masterthesis);
+        preparedStatement.setBoolean(13,is_inproceedings);
     }
 
     public void addBatch() throws Exception{

@@ -105,6 +105,7 @@ public class UserHandler extends DefaultHandler{
         try {
             if (author) {
                 postgreSQL.addAuthorField(new String(ch, start, length));
+                postgreSQL.addFieldAuthorNameForPublicationElement(new String(ch,start,length));
                 author = false;
             } else if (title) {
                 postgreSQL.addFieldTitleForPublicationElement(new String(ch, start, length));
