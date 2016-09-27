@@ -64,7 +64,6 @@ public class PostgreSQL {
                          "author.NAME = publication.AUTHOR_NAME");
      }
 
-
      public void createUniionPublicationStatement() throws Exception{
          statement = connection.createStatement();
          statement.execute("SELECT * INTO PUBLICATION\n" +

@@ -24,7 +24,7 @@ public class MainSAX {
             saxParser.parse(file,handler);
             postgreSQL.executeBatch();
             postgreSQL.createDistinctAuthorStatement();
-            postgreSQL.createAuthoredStatement();
+//            postgreSQL.createAuthoredStatement();
             postgreSQL.createUniionPublicationStatement();
             postgreSQL.closeStatement();
             postgreSQL.commitChanges();
