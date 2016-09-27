@@ -12,19 +12,20 @@ import java.io.File;
 public class MainSAX {
 
     public static void main(String args[]){
-        File file = new File("dblp.xml");
+        File file = new File("input.xml");
         SAXParserFactory factory = SAXParserFactory.newInstance();
         PostgreSQL postgreSQL = new PostgreSQL();
 
         try {
             postgreSQL.createGeneralPreparedStatementAuthor();
-            postgreSQL.createGeneralPreparedStatementPublication();
+            postgreSQL.createAllStatementForPublication();
             SAXParser saxParser = factory.newSAXParser();
             DefaultHandler handler = new UserHandler(postgreSQL);
             saxParser.parse(file,handler);
             postgreSQL.executeBatch();
             postgreSQL.createDistinctAuthorStatement();
             postgreSQL.createAuthoredStatement();
+            postgreSQL.createUniionPublicationStatement();
             postgreSQL.closeStatement();
             postgreSQL.commitChanges();
             postgreSQL.closeCOnnection();

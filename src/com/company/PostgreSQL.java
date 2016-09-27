@@ -12,7 +12,21 @@ public class PostgreSQL {
 
     private Connection connection;
     private Statement statement;
-    private PreparedStatement preparedStatement;
+    private PreparedStatement preparedStatementArticle;
+    private PreparedStatement preparedStatementPhdThesis;
+
+
+
+    private PreparedStatement preparedStatementBook;
+    private PreparedStatement preparedStatementProceedings;
+    private PreparedStatement preparedStatementWebsite;
+    private PreparedStatement preparedStatementInCollection;
+    private PreparedStatement preparedStatementMasterThesis;
+    private PreparedStatement preparedStatementInProceedings;
+    private ArrayList<PreparedStatement> listArticlePreparedStatement = new ArrayList<PreparedStatement>();
+
+
+
     private static long counter= 0;
 
     //this is additional PreparedStatement if we are using SAXParsing
@@ -23,7 +37,7 @@ public class PostgreSQL {
         try {
             Class.forName("org.postgresql.Driver");
             Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/db"
-                    ,"postgres","postgres");
+                    ,"postgres","1234567890");
             connection.setAutoCommit(false);
             System.out.println("database is open successfully");
             this.connection = connection;
@@ -35,7 +49,7 @@ public class PostgreSQL {
         }
     }
 
-    //general crappy insert without optimization
+    //general Statement
     public void createDistinctAuthorStatement() throws Exception{
         statement = connection.createStatement();
         statement.execute("INSERT INTO author (NAME) SELECT DISTINCT(NAME) from raw_author");
@@ -49,6 +63,28 @@ public class PostgreSQL {
                          "FROM author INNER JOIN publication on\n" +
                          "author.NAME = publication.AUTHOR_NAME");
      }
+
+
+     public void createUniionPublicationStatement() throws Exception{
+         statement = connection.createStatement();
+         statement.execute("SELECT * INTO PUBLICATION\n" +
+                 "   FROM ( SELECT * FROM article\n" +
+                 "\t\t UNION \n" +
+                 "\tSELECT * FROM phdthesis \n" +
+                 "          \tUNION \n" +
+                 "\tSELECT * FROM book \n" +
+                 "\t\tUNION \n" +
+                 "\tSELECT * FROM proceedings \n" +
+                 "                 UNION \n" +
+                 "\tSELECT * FROM website \n" +
+                 "\t\tUNION \n" +
+                 "\tSELECT * FROM incollection\n" +
+                 "                 UNION \n" +
+                 "\tSELECT * FROM masterthesis \n" +
+                 "\t\tUNION \n" +
+                 "\tSELECT * FROM inproceedings) AS a");
+     }
+
 
 
      public void closeStatement() throws  Exception{
@@ -83,116 +119,183 @@ public class PostgreSQL {
 
     public void executeBatch()throws Exception{
         preparedStatementForAuthor.executeBatch();
-        preparedStatement.executeBatch();
+        for(PreparedStatement preparedStatement:listArticlePreparedStatement){
+            preparedStatement.executeBatch();
+        }
     }
 
 
-    //insert into Publication table
-    public void createGeneralPreparedStatementPublication() throws Exception{
-        preparedStatement = connection.prepareStatement("INSERT INTO publication(pubkey,author_name,title,year,journal,is_article," +
-                "is_phdthesis,is_book,is_proceedings,is_website,is_incollection,is_masterthesis,is_inproceedings) VALUES " +
-                "(?,?,?,?,?,?,?,?,?,?,?,?,?)");
+    //insert into article table
+    public void createPreparedStatementArticle() throws Exception{
+        preparedStatementArticle = connection.prepareStatement("INSERT INTO article(pubkey,author_name,title,year,journal) VALUES"+
+                "(?,?,?,?,?)");
+        listArticlePreparedStatement.add(preparedStatementArticle);
     }
 
-    public void addPublicationField(String pubKey,String title,int year,String journal,boolean is_article
-                                    ,boolean is_phdthesis,boolean is_book,boolean is_proceedings,boolean is_website
-                                    ,boolean is_incollection,boolean is_masterthesis,boolean is_inproceedings)
 
-    throws Exception
-    {
-        preparedStatement.setString(1,pubKey);
-        preparedStatement.setString(2,title);
-        preparedStatement.setInt(3,year);
-        preparedStatement.setString(4,journal);
-        preparedStatement.setBoolean(5,is_article);
-        preparedStatement.setBoolean(6,is_phdthesis);
-        preparedStatement.setBoolean(7,is_book);
-        preparedStatement.setBoolean(8,is_proceedings);
-        preparedStatement.setBoolean(9,is_website);
-        preparedStatement.setBoolean(10,is_incollection);
-        preparedStatement.setBoolean(11,is_masterthesis);
-        preparedStatement.setBoolean(12,is_inproceedings);
-        preparedStatement.addBatch();
-        counter++;
-        if(counter %1000 == 0) System.out.println(new Date().toString()+" pubKey: "+pubKey+" title: "+title+" year: "+year+" journal: "+journal);
+    //insert into  phdthesis
+    public void createPrepareStatementPhdThesis() throws Exception{
+        preparedStatementPhdThesis = connection.prepareStatement("INSERT INTO phdthesis (pubkey,author_name,title,year,journal) VALUES"+
+                "(?,?,?,?,?)");
+        listArticlePreparedStatement.add(preparedStatementPhdThesis);
     }
 
-    public void addFieldPubKeyForPublicationElement(String s) throws Exception{
+
+    //inset into books
+    public void createPreparedStatementBook() throws Exception{
+        preparedStatementBook = connection.prepareStatement("INSERT INTO book(pubkey,author_name,title,year,journal) VALUES"+
+                "(?,?,?,?,?)");
+        listArticlePreparedStatement.add(preparedStatementBook);
+    }
+
+
+
+    //insert into proceedings
+    public void createPreparedStatementProceedings() throws Exception{
+        preparedStatementProceedings = connection.prepareStatement("INSERT INTO proceedings(pubkey,author_name,title,year,journal) VALUES"+
+                "(?,?,?,?,?)");
+        listArticlePreparedStatement.add(preparedStatementProceedings);
+    }
+
+
+
+    //inset into website
+    public void createPreparedStatementWebsite() throws Exception{
+        preparedStatementWebsite = connection.prepareStatement("INSERT INTO website(pubkey,author_name,title,year,journal) VALUES"+
+                "(?,?,?,?,?)");
+        listArticlePreparedStatement.add(preparedStatementWebsite);
+    }
+
+
+    //insert into incollection
+    public void createPreparedStatementInCollection() throws Exception{
+        preparedStatementInCollection = connection.prepareStatement("INSERT INTO incollection(pubkey,author_name,title,year,journal) VALUES"+
+                "(?,?,?,?,?)");
+        listArticlePreparedStatement.add(preparedStatementInCollection);
+    }
+
+
+    //inset into masterthesis
+    public void createPreparedStatementMasterThesis() throws Exception{
+        preparedStatementMasterThesis = connection.prepareStatement("INSERT INTO masterthesis(pubkey,author_name,title,year,journal) VALUES"+
+                "(?,?,?,?,?)");
+        listArticlePreparedStatement.add(preparedStatementMasterThesis);
+    }
+
+
+    //insert into inproceedings
+    public void createPreparedStatementInProceedings() throws Exception{
+        preparedStatementInProceedings = connection.prepareStatement("INSERT INTO inproceedings(pubkey,author_name,title,year,journal) VALUES"+
+                "(?,?,?,?,?)");
+        listArticlePreparedStatement.add(preparedStatementInProceedings);
+    }
+
+    //ARTICLE,PHD_THESIS,BOOK,PROCEEDINGS,WEBSITE,IN_COLLECTION,MASTER_THESIS,IN_PROCEEDINGS
+
+    public void createAllStatementForPublication() throws Exception{
+        createPreparedStatementArticle();
+        createPrepareStatementPhdThesis();
+        createPreparedStatementBook();
+        createPreparedStatementProceedings();
+        createPreparedStatementWebsite();
+        createPreparedStatementInCollection();
+        createPreparedStatementMasterThesis();
+        createPreparedStatementInProceedings();
+    }
+
+
+
+    public void addFieldPubKeyForPublicationElement(PreparedStatement preparedStatement,String s) throws Exception{
         preparedStatement.setString(1,s);
     }
 
-    public void addFieldAuthorNameForPublicationElement(String s) throws Exception{
+    public void addFieldAuthorNameForPublicationElement(PreparedStatement preparedStatement,String s) throws Exception{
         preparedStatement.setString(2,s);
     }
 
-    public void addFieldTitleForPublicationElement(String s) throws Exception{
+    public void addFieldTitleForPublicationElement(PreparedStatement preparedStatement,String s) throws Exception{
         preparedStatement.setString(3,s);
     }
 
-    public void addFieldYearForPublicationElement(int year) throws Exception{
+    public void addFieldYearForPublicationElement(PreparedStatement preparedStatement,int year) throws Exception{
         preparedStatement.setInt(4,year);
     }
 
-    public void addFieldJournalForPublicationElement(String s) throws Exception{
+    public void addFieldJournalForPublicationElement(PreparedStatement preparedStatement,String s) throws Exception{
         preparedStatement.setString(5,s);
     }
 
-    public void addFieldIsArticleForPublicationElement() throws Exception{
-        addFieldBoolean(true,false,false,false,false,false,false,false);
+
+    public PreparedStatement getPreparedStatementArticle() {
+        return preparedStatementArticle;
     }
 
-    public void addFieldIsPhdThesisForPublicationElement() throws Exception{
-        addFieldBoolean(false,true,false,false,false,false,false,false);
+    public PreparedStatement getPreparedStatementPhdThesis() {
+        return preparedStatementPhdThesis;
     }
 
-    public void addFieldIsBookForPublicationElement() throws Exception{
-        addFieldBoolean(false,false,true,false,false,false,false,false);
+    public PreparedStatement getPreparedStatementBook() {
+        return preparedStatementBook;
     }
 
-    public void addFieldIsProceedingsForPublicationElement() throws Exception{
-        addFieldBoolean(false,false,false,true,false,false,false,false);
+    public PreparedStatement getPreparedStatementProceedings() {
+        return preparedStatementProceedings;
     }
 
-
-    public void addFieldIsWebsiteForPublicationElement() throws Exception{
-        addFieldBoolean(false,false,false,false,true,false,false,false);
+    public PreparedStatement getPreparedStatementWebsite() {
+        return preparedStatementWebsite;
     }
 
-
-    public void addFieldIsInCollectionsForPublicationElement() throws Exception{
-        addFieldBoolean(false,false,false,false,false,true,false,false);
+    public PreparedStatement getPreparedStatementInCollection() {
+        return preparedStatementInCollection;
     }
 
-
-    public void addFieldIsMasterThesisForPublicationElement() throws Exception{
-        addFieldBoolean(false,false,false,false,false,false,true,false);
+    public PreparedStatement getPreparedStatementMasterThesis() {
+        return preparedStatementMasterThesis;
     }
 
-    public void addFieldIsInProceedingsForPublicationElement() throws Exception{
-        addFieldBoolean(false,false,false,false,false,false,false,true);
+    public PreparedStatement getPreparedStatementInProceedings() {
+        return preparedStatementInProceedings;
     }
 
-    public void addFieldBoolean(boolean is_article,boolean is_phdthesis,boolean is_book,boolean is_proceedings, boolean is_website,
-                               boolean is_incollection , boolean is_masterthesis , boolean is_inproceedings) throws Exception{
-        preparedStatement.setBoolean(6,is_article);
-        preparedStatement.setBoolean(7,is_phdthesis);
-        preparedStatement.setBoolean(8,is_book);
-        preparedStatement.setBoolean(9,is_proceedings);
-        preparedStatement.setBoolean(10,is_website);
-        preparedStatement.setBoolean(11,is_incollection);
-        preparedStatement.setBoolean(12,is_masterthesis);
-        preparedStatement.setBoolean(13,is_inproceedings);
-    }
-
-    public void addBatch() throws Exception{
-        preparedStatement.addBatch();
+    public void addBatch(ArticleType.TYPE type) throws Exception{
+        switch(type){
+            case ARTICLE:
+                preparedStatementArticle.addBatch();
+                break;
+            case PHD_THESIS:
+                preparedStatementPhdThesis.addBatch();
+                break;
+            case BOOK:
+                preparedStatementBook.addBatch();
+                break;
+            case PROCEEDINGS:
+                preparedStatementProceedings.addBatch();
+                break;
+            case WEBSITE:
+                preparedStatementWebsite.addBatch();
+                break;
+            case IN_COLLECTION:
+                preparedStatementInCollection.addBatch();
+                break;
+            case MASTER_THESIS:
+                preparedStatementMasterThesis.addBatch();
+                break;
+            case IN_PROCEEDINGS:
+                preparedStatementInProceedings.addBatch();
+                break;
+        }
         counter++;
         if(counter %1000 == 0){
             System.out.println(new Date().toString()+" Article");
-            preparedStatement.executeBatch();
+            for(PreparedStatement preparedStatement:listArticlePreparedStatement){
+                preparedStatement.executeBatch();
+            }
             commitChanges();
         }
     }
+
+
 
 
 
