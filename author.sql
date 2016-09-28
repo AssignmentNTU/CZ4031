@@ -9,13 +9,13 @@ CREATE TABLE author(
     NAME TEXT UNIQUE
 );
 
-CREATE TABLE publication(
-    PUBLICATION_ID SERIAL PRIMARY KEY,
-    AUTHOR_NAME TEXT,
-    PUBKEY TEXT UNIQUE,
-    TITLE TEXT,
-    YEAR INT ,
-    JOURNAL TEXT);
+--CREATE TABLE publication(
+--    PUBLICATION_ID SERIAL PRIMARY KEY,
+--    AUTHOR_NAME TEXT,
+--    PUBKEY TEXT UNIQUE,
+--    TITLE TEXT,
+--    YEAR INT ,
+--    JOURNAL TEXT);
 
 
 CREATE TABLE article(
@@ -111,3 +111,9 @@ CREATE TABLE authored(
     PUBLICATION_ID INT REFERENCES publication(PUBLICATION_ID)
 );
 
+
+drop table article; drop table author; drop table book; drop table incollection;
+drop table inproceedings; drop table masterthesis; drop table phdthesis; drop table proceedings;
+drop table publication;
+drop table raw_author;
+drop table website;

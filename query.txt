@@ -1,0 +1,16 @@
+SELECT * INTO PUBLICATIONS
+   FROM ( SELECT * FROM article
+		 UNION 
+	SELECT * FROM phdthesis 
+          	UNION 
+	SELECT * FROM book 
+		UNION 
+	SELECT * FROM proceedings 
+                 UNION 
+	SELECT * FROM website 
+		UNION 
+	SELECT * FROM incollection
+                 UNION 
+	SELECT * FROM masterthesis 
+		UNION 
+	SELECT * FROM inproceedings) AS a
