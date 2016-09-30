@@ -89,9 +89,9 @@ public class PostgreSQL {
 
     //insert into Publication table
     public void createGeneralPreparedStatementPublication() throws Exception{
-        preparedStatement = connection.prepareStatement("INSERT INTO publication(pubkey,author_name,title,year,journal,is_article," +
-                "is_phdthesis,is_book,is_proceedings,is_website,is_incollection,is_masterthesis,is_inproceedings) VALUES " +
-                "(?,?,?,?,?,?,?,?,?,?,?,?,?)");
+        preparedStatement = connection.prepareStatement("INSERT INTO publication(pubkey,author_name,title,year,journal,type" +
+                ") VALUES " +
+                "(?,?,?,?,?,?)");
     }
 
     public void addPublicationField(String pubKey,String title,int year,String journal,boolean is_article
@@ -137,52 +137,11 @@ public class PostgreSQL {
         preparedStatement.setString(5,s);
     }
 
-    public void addFieldIsArticleForPublicationElement() throws Exception{
-        addFieldBoolean(true,false,false,false,false,false,false,false);
-    }
-
-    public void addFieldIsPhdThesisForPublicationElement() throws Exception{
-        addFieldBoolean(false,true,false,false,false,false,false,false);
-    }
-
-    public void addFieldIsBookForPublicationElement() throws Exception{
-        addFieldBoolean(false,false,true,false,false,false,false,false);
-    }
-
-    public void addFieldIsProceedingsForPublicationElement() throws Exception{
-        addFieldBoolean(false,false,false,true,false,false,false,false);
+    public void addFieldTypeForPublicationElement(String s) throws Exception{
+        preparedStatement.setString(6,s);
     }
 
 
-    public void addFieldIsWebsiteForPublicationElement() throws Exception{
-        addFieldBoolean(false,false,false,false,true,false,false,false);
-    }
-
-
-    public void addFieldIsInCollectionsForPublicationElement() throws Exception{
-        addFieldBoolean(false,false,false,false,false,true,false,false);
-    }
-
-
-    public void addFieldIsMasterThesisForPublicationElement() throws Exception{
-        addFieldBoolean(false,false,false,false,false,false,true,false);
-    }
-
-    public void addFieldIsInProceedingsForPublicationElement() throws Exception{
-        addFieldBoolean(false,false,false,false,false,false,false,true);
-    }
-
-    public void addFieldBoolean(boolean is_article,boolean is_phdthesis,boolean is_book,boolean is_proceedings, boolean is_website,
-                               boolean is_incollection , boolean is_masterthesis , boolean is_inproceedings) throws Exception{
-        preparedStatement.setBoolean(6,is_article);
-        preparedStatement.setBoolean(7,is_phdthesis);
-        preparedStatement.setBoolean(8,is_book);
-        preparedStatement.setBoolean(9,is_proceedings);
-        preparedStatement.setBoolean(10,is_website);
-        preparedStatement.setBoolean(11,is_incollection);
-        preparedStatement.setBoolean(12,is_masterthesis);
-        preparedStatement.setBoolean(13,is_inproceedings);
-    }
 
     public void addBatch() throws Exception{
         preparedStatement.addBatch();

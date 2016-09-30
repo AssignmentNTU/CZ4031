@@ -62,34 +62,34 @@ public class UserHandler extends DefaultHandler{
 
         try {
             if (qName.equalsIgnoreCase("article")) {
-                postgreSQL.addFieldIsArticleForPublicationElement();
+                postgreSQL.addFieldTypeForPublicationElement(ArticleType.TYPE.ARTICLE+"");
                 postgreSQL.addBatch();
             } else if (qName.equalsIgnoreCase("inproceedings")) {
-                postgreSQL.addFieldIsInProceedingsForPublicationElement();
+                postgreSQL.addFieldTypeForPublicationElement(ArticleType.TYPE.IN_PROCEEDINGS+"");
                 postgreSQL.addBatch();
 
             } else if (qName.equalsIgnoreCase("proceedings")) {
-                postgreSQL.addFieldIsProceedingsForPublicationElement();
+                postgreSQL.addFieldTypeForPublicationElement(ArticleType.TYPE.PROCEEDINGS+"");
                 postgreSQL.addBatch();
 
             } else if (qName.equalsIgnoreCase("book")) {
-                postgreSQL.addFieldIsBookForPublicationElement();
+                postgreSQL.addFieldTypeForPublicationElement(ArticleType.TYPE.BOOK+"");
                 postgreSQL.addBatch();
 
             } else if (qName.equalsIgnoreCase("incollection")) {
-                postgreSQL.addFieldIsInCollectionsForPublicationElement();
+                postgreSQL.addFieldTypeForPublicationElement(ArticleType.TYPE.IN_COLLECTION+"");
                 postgreSQL.addBatch();
 
             } else if (qName.equalsIgnoreCase("phdthesis")) {
-                postgreSQL.addFieldIsPhdThesisForPublicationElement();
+                postgreSQL.addFieldTypeForPublicationElement(ArticleType.TYPE.PHD_THESIS+"");
                 postgreSQL.addBatch();
 
             } else if (qName.equalsIgnoreCase("mastersthesis")) {
-                postgreSQL.addFieldIsMasterThesisForPublicationElement();
+                postgreSQL.addFieldTypeForPublicationElement(ArticleType.TYPE.MASTER_THESIS+"");
                 postgreSQL.addBatch();
 
             } else if (qName.equalsIgnoreCase("www")) {
-                postgreSQL.addFieldIsWebsiteForPublicationElement();
+                postgreSQL.addFieldTypeForPublicationElement(ArticleType.TYPE.WEBSITE+"");
                 postgreSQL.addBatch();
 
             }
