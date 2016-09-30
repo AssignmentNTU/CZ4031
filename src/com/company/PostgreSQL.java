@@ -41,7 +41,7 @@ public class PostgreSQL {
         try {
             Class.forName("org.postgresql.Driver");
             Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/db"
-                    ,"postgres","postgres");
+                    ,"postgres","1234567890");
             connection.setAutoCommit(false);
             System.out.println("database is open successfully");
             this.connection = connection;
@@ -267,55 +267,56 @@ public class PostgreSQL {
 
         switch(type){
             case ARTICLE:
-                if(journal.equals(null)){
+                if(journal == null){
                     preparedStatementArticle.setString(5,null);
                 }
                 preparedStatementArticle.addBatch();
                 break;
             case PHD_THESIS:
-                if(journal.equals(null)){
-                    preparedStatementPhdThesis.setString(5,null);
+                if(journal == null){
+                    preparedStatementPhdThesis.setString(5,"");
                 }
                 preparedStatementPhdThesis.addBatch();
                 break;
             case BOOK:
-                if(journal.equals(null)){
+                if(journal == null){
                     preparedStatementBook.setString(5,null);
                 }
                 preparedStatementBook.addBatch();
                 break;
             case PROCEEDINGS:
-                if(journal.equals(null)){
+                if(journal == null){
                     preparedStatementProceedings.setString(5,null);
                 }
                 preparedStatementProceedings.addBatch();
                 break;
             case WEBSITE:
-                if(journal.equals(null)){
+                if(journal == null){
                     preparedStatementWebsite.setString(5,null);
                 }
                 preparedStatementWebsite.addBatch();
                 break;
             case IN_COLLECTION:
-                if(journal.equals(null)){
+                if(journal == null){
                     preparedStatementInCollection.setString(5,null);
                 }
                 preparedStatementInCollection.addBatch();
                 break;
             case MASTER_THESIS:
-                if(journal.equals(null)){
+                if(journal == null){
                     preparedStatementMasterThesis.setString(5,null);
                 }
                 preparedStatementMasterThesis.addBatch();
                 break;
             case IN_PROCEEDINGS:
-                if(journal.equals(null)){
+                if(journal == null){
                     preparedStatementInProceedings.setString(5,null);
                 }
                 preparedStatementInProceedings.addBatch();
                 break;
         }
         counter++;
+        journal = null;
         if(counter %1000 == 0){
             System.out.println(new Date().toString()+" Article");
             for(PreparedStatement preparedStatement:listArticlePreparedStatement){
