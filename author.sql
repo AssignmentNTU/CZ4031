@@ -1,3 +1,8 @@
+drop table article; drop table author; drop table book; drop table incollection;
+drop table inproceedings; drop table masterthesis; drop table phdthesis; drop table proceedings;
+drop table publication;
+drop table raw_author;
+drop table website;
 
 CREATE TABLE raw_author(
     AUTHOR_ID SERIAL PRIMARY KEY,
@@ -106,14 +111,10 @@ create table inproceedings(
 );
 
 
-CREATE TABLE authored(
-    AUTHOR_NAME TEXT REFERENCES author(NAME),
-    PUBLICATION_ID INT REFERENCES publication(PUBLICATION_ID)
-);
+--CREATE TABLE authored(
+--    AUTHOR_NAME TEXT REFERENCES author(NAME),
+--    PUBLICATION_ID INT REFERENCES publication(PUBLICATION_ID)
+--);
 
 
-drop table article; drop table author; drop table book; drop table incollection;
-drop table inproceedings; drop table masterthesis; drop table phdthesis; drop table proceedings;
-drop table publication;
-drop table raw_author;
-drop table website;
+
