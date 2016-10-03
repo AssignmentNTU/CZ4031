@@ -115,8 +115,8 @@ public class Main {
                     looping(7,listBooolean);
                     break;
             }
-            postgreSQL.addPublicationField(key,title,year,journal,listBooolean[0],listBooolean[1],listBooolean[2],listBooolean[3],listBooolean[4]
-            ,listBooolean[5],listBooolean[6],listBooolean[7]);
+//            postgreSQL.addPublicationField(key,title,year,journal,listBooolean[0],listBooolean[1],listBooolean[2],listBooolean[3],listBooolean[4]
+//            ,listBooolean[5],listBooolean[6],listBooolean[7]);
         }
         postgreSQL.executeBatch();
     }

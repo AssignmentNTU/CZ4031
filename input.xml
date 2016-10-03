@@ -8,16 +8,93 @@
     <author bibtex="ej;dj" aux="djdkd">Edward Sujono</author>
 
 
-    <article mdate="2011-01-11" key="journal/edward">
-            <author>Edward Sujono</author>
-            <title>Edward Xi Ribet</title>
-            <pages>10-20</pages>
-            <year>2017</year>
-            <volume>20</volume>
-            <journal>Acta -inf</journal>
-            <url>db/joournam/edward</url>
-            <ee>http://edward.sujono.com</ee>
+    <article mdate="2011-01-11" key="eydhukhqka jk 8">
+        <author>Edward Sujono Article</author>
+        <title>Edward Xi Ribet 8</title>
+        <pages>10-20</pages>
+        <year>2017</year>
+        <volume>20</volume>
+        <journal>Acta -inf</journal>
+        <url>db/joournam/edward</url>
+        <ee>http://edward.sujono.com</ee>
     </article>
+
+
+    <inproceedings mdate="2011-01-11" key="eydhukhqka jk 7">
+        <author>Edward Sujon InProceedingso</author>
+        <title>Edward Xi Ribet 7</title>
+        <pages>10-20</pages>
+        <year>2017</year>
+        <volume>20</volume>
+        <journal>Acta -inf</journal>
+        <url>db/joournam/edward</url>
+        <ee>http://edward.sujono.com</ee>
+    </inproceedings>
+
+    <proceedings mdate="2011-01-11" key="eydhukhqka jk 6">
+        <author>Edward Sujono proceedings</author>
+        <title>Edward Xi Ribet 6</title>
+        <pages>10-20</pages>
+        <year>2017</year>
+        <volume>20</volume>
+        <journal>Acta -inf</journal>
+        <url>db/joournam/edward</url>
+        <ee>http://edward.sujono.com</ee>
+    </proceedings>
+
+    <book mdate="2011-01-11" key="eydhukhqka jk 5">
+        <author>Edward Sujono book</author>
+        <title>Edward Xi Ribet 5</title>
+        <pages>10-20</pages>
+        <year>2017</year>
+        <volume>20</volume>
+        <journal>Acta -inf</journal>
+        <url>db/joournam/edward</url>
+        <ee>http://edward.sujono.com</ee>
+    </book>
+
+    <incollection mdate="2011-01-11" key="eydhukhqka jk 4">
+        <author>Edward Sujono inCollections</author>
+        <title>Edward Xi Ribet 4</title>
+        <pages>10-20</pages>
+        <year>2017</year>
+        <volume>20</volume>
+        <journal>Acta -inf</journal>
+        <url>db/joournam/edward</url>
+        <ee>http://edward.sujono.com</ee>
+    </incollection>
+
+    <mastersthesis mdate="2011-01-11" key="eydhukhqka jk 3">
+        <author>Edward Sujono masterthesis</author>
+        <title>Edward Xi Ribet 3</title>
+        <pages>10-20</pages>
+        <year>2017</year>
+        <volume>20</volume>
+        <journal>Acta -inf</journal>
+        <url>db/joournam/edward</url>
+        <ee>http://edward.sujono.com</ee>
+    </mastersthesis>
+
+    <phdthesis mdate="2011-01-11" key="eydhukhqka jk 2">
+        <author>Edward Sujono phdThesis</author>
+        <title>Edward Xi Ribet 2</title>
+        <pages>10-20</pages>
+        <year>2017</year>
+        <volume>20</volume>
+        <url>db/joournam/edward</url>
+        <ee>http://edward.sujono.com</ee>
+    </phdthesis>
+
+    <www mdate="2011-01-11" key="eydhukhqka jk 1">
+        <author>Edward Sujono website</author>
+        <title>Edward Xi Ribet 1</title>
+        <pages>10-20</pages>
+        <year>2017</year>
+        <volume>20</volume>
+        <journal>Acta -inf</journal>
+        <url>db/joournam/edward</url>
+        <ee>http://edward.sujono.com</ee>
+    </www>
 
 
 </root>

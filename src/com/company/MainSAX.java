@@ -19,15 +19,26 @@ public class MainSAX {
         try {
             postgreSQL.createGeneralPreparedStatementAuthor();
             postgreSQL.createGeneralPreparedStatementPublication();
+            postgreSQL.setAllPreparedStatement();
             SAXParser saxParser = factory.newSAXParser();
             DefaultHandler handler = new UserHandler(postgreSQL);
             saxParser.parse(file,handler);
             postgreSQL.executeBatch();
             postgreSQL.createDistinctAuthorStatement();
-            postgreSQL.createAuthoredStatement();
+//            postgreSQL.createAuthoredStatement();
             postgreSQL.closeStatement();
             postgreSQL.commitChanges();
             postgreSQL.closeCOnnection();
+
+            //need to create pubauthor
+//            PostgreSQL postgreSQLOther = new PostgreSQL();
+//            postgreSQLOther.createGeneralPreparedStatementForPubAuthor();
+//            DefaultHandler otherHandler = new UserHandlerPubAuthor(postgreSQLOther);
+//            SAXParser saxParserOther = factory.newSAXParser();
+//            saxParserOther.parse(file,otherHandler);
+//            postgreSQLOther.executePubAuthor();
+//            postgreSQLOther.closeCOnnection();
+
         }catch(Exception e){
             try {
                 postgreSQL.closeCOnnection();
