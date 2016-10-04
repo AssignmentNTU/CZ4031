@@ -108,12 +108,15 @@ public class PostgreSQL {
 
     public void executeBatch()throws Exception{
         preparedStatementForAuthor.executeBatch();
-        preparedStatement.executeBatch();
         preparedStatementForArticle.executeBatch();
         preparedStatementForInCollection.executeBatch();
         preparedStatementForInProceedings.executeBatch();
         preparedStatementForBooks.executeBatch();
         preparedStatementForProceedings.executeBatch();
+    }
+
+    public void executePublication() throws Exception{
+        preparedStatement.executeBatch();
     }
 
     public void executePubAuthor() throws Exception{
@@ -439,7 +442,6 @@ public class PostgreSQL {
 
 
     public void setAllPreparedStatement() throws Exception{
-        createGeneralPreparedStatementForPubAuthor();
         createGeneralPreparedStatementForProceedings();
         createGeneralPreparedStatementForBook();
         createGeneralPreparedStatementForInProceedings();

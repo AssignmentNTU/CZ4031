@@ -19,10 +19,10 @@ public class UserHandler extends DefaultHandler{
 
     //declare all the lement here
     private boolean author = false;
-    private boolean pages = false;
-    private boolean title = false;
+//    private boolean pages = false;
+//    private boolean title = false;
     private boolean journal = false;
-    private boolean year = false;
+//    private boolean year = false;
 
     //for article type
     private boolean month = false,volume = false,number = false;
@@ -53,16 +53,12 @@ public class UserHandler extends DefaultHandler{
            //all type of article is needed to get the publcication key
            if (qName.equalsIgnoreCase("author")) {
                author = true;
-           } else if (qName.equalsIgnoreCase("title")) {
-               title = true;
-           }else if (qName.equalsIgnoreCase("year")) {
-               year = true;
            } else if (qName.equalsIgnoreCase("article") || qName.equalsIgnoreCase("inproceedings") || qName.equalsIgnoreCase("proceedings") || qName.equalsIgnoreCase("book")
                    || qName.equalsIgnoreCase("incollection")) {
                String key = attributes.getValue("key");
                keySaved = key;
                try {
-                   postgreSQL.addFieldPubKeyForPublicationElement(key);
+//                   postgreSQL.addFieldPubKeyForPublicationElement(key);
                } catch (Exception e) {
                    e.printStackTrace();
                }
@@ -108,8 +104,6 @@ public class UserHandler extends DefaultHandler{
            //for Proceeding Type
            else if(qName.equalsIgnoreCase("publisher")){
                 publisher = true;
-           }else if(qName.equalsIgnoreCase("pages")){
-               pages = true;
            }
        }catch(Exception e){
 
@@ -123,23 +117,23 @@ public class UserHandler extends DefaultHandler{
         try {
             if (qName.equalsIgnoreCase("article")) {
                 postgreSQL.addBatchForArticle();
-                postgreSQL.addBatch();
+//                postgreSQL.addBatch();
                 article = false;
             } else if (qName.equalsIgnoreCase("inproceedings")) {
                 postgreSQL.addBatchForInProceedings();
-                postgreSQL.addBatch();
+//                postgreSQL.addBatch();
                 inProceedings = false;
             } else if (qName.equalsIgnoreCase("proceedings")) {
                 postgreSQL.addBatchProceedings();
-                postgreSQL.addBatch();
+//                postgreSQL.addBatch();
                 proocedings = false;
             } else if (qName.equalsIgnoreCase("book")) {
                 postgreSQL.addBatchBook();
-                postgreSQL.addBatch();
+//                postgreSQL.addBatch();
                 book = false;
             } else if (qName.equalsIgnoreCase("incollection")) {
                 postgreSQL.addBatchForInCollection();
-                postgreSQL.addBatch();
+//                postgreSQL.addBatch();
                 inCollection = false;
             }
         }catch(Exception e){
@@ -155,21 +149,12 @@ public class UserHandler extends DefaultHandler{
             if (author) {
                 postgreSQL.addAuthorField(new String(ch, start, length));
                 //when there still inside article we need to put into pubauthor
-                if(article || inProceedings || inCollection || proocedings || book) {
-                    postgreSQL.addPubAuthorForPubKey(keySaved);
-                    postgreSQL.addPubAuthorForName(new String(ch, start, length));
-                    postgreSQL.addBatchForPubAuthor();
-                }
+//                if(article || inProceedings || inCollection || proocedings || book) {
+//                    postgreSQL.addPubAuthorForPubKey(keySaved);
+//                    postgreSQL.addPubAuthorForName(new String(ch, start, length));
+//                    postgreSQL.addBatchForPubAuthor();
+//                }
                 author = false;
-            } else if (title) {
-                postgreSQL.addPublicationTitle(new String(ch, start, length));
-                title = false;
-            } else if(year){
-                postgreSQL.addPublicationYear(Integer.parseInt(new String(ch, start, length)));
-                year = false;
-            }else if(pages){
-                postgreSQL.addPublicationTotalPages(new String(ch, start, length));
-                pages = false;
             }
             else if(journal){
                 if(article){

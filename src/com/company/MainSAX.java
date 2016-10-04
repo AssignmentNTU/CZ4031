@@ -11,25 +11,38 @@ import java.io.File;
  */
 public class MainSAX {
 
+
     public static void main(String args[]){
-        File file = new File("dblp.xml");
+        File file = new File("input.xml");
         SAXParserFactory factory = SAXParserFactory.newInstance();
         PostgreSQL postgreSQL = new PostgreSQL();
 
         try {
+            //parse publication first
+//            postgreSQL.createGeneralPreparedStatementPublication();
+//            SAXParser saxParser = factory.newSAXParser();
+//            DefaultHandler handler = new UserHandlerPublication(postgreSQL);
+//            saxParser.parse(file,handler);
+//            postgreSQL.executePublication();
+////            postgreSQL.createAuthoredStatement();
+//            postgreSQL.closeStatement();
+//            postgreSQL.commitChanges();
+//            postgreSQL.closeCOnnection();
+
+            //just need to parse all the subtype of publication and author
+            postgreSQL = new PostgreSQL();
             postgreSQL.createGeneralPreparedStatementAuthor();
-            postgreSQL.createGeneralPreparedStatementPublication();
             postgreSQL.setAllPreparedStatement();
             SAXParser saxParser = factory.newSAXParser();
             DefaultHandler handler = new UserHandler(postgreSQL);
             saxParser.parse(file,handler);
             postgreSQL.executeBatch();
             postgreSQL.createDistinctAuthorStatement();
-//            postgreSQL.createAuthoredStatement();
             postgreSQL.closeStatement();
             postgreSQL.commitChanges();
             postgreSQL.closeCOnnection();
-
+//
+//
             //need to create pubauthor
 //            PostgreSQL postgreSQLOther = new PostgreSQL();
 //            postgreSQLOther.createGeneralPreparedStatementForPubAuthor();
