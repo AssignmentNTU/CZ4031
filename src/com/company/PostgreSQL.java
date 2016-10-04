@@ -15,6 +15,7 @@ public class PostgreSQL {
     //this preparedStatement is for publication general
     private PreparedStatement preparedStatement;
     private static long counter= 0;
+    private static long counterLimit = 10;
 
     //this is additional PreparedStatement if we are using SAXParsing
     private PreparedStatement preparedStatementForAuthor;
@@ -97,7 +98,7 @@ public class PostgreSQL {
         preparedStatementForAuthor.setString(1,authorName);
         preparedStatementForAuthor.addBatch();
         counter++;
-        if(counter % 1000 == 0){
+        if(counter % counterLimit == 0){
             System.out.println(new Date().toString()+" authorName: "+authorName);
             preparedStatementForAuthor.executeBatch();
             commitChanges();
@@ -148,7 +149,7 @@ public class PostgreSQL {
     public void addBatch() throws Exception{
         preparedStatement.addBatch();
         counter++;
-        if(counter %1000 == 0){
+        if(counter %counterLimit == 0){
             System.out.println(new Date().toString()+" Article");
             preparedStatement.executeBatch();
             commitChanges();
@@ -209,7 +210,8 @@ public class PostgreSQL {
         volume = -1;
         journalSaved = null;
         preparedStatementForArticle.addBatch();
-        if(counter %1000 == 0){
+        counter++;
+        if(counter % counterLimit == 0){
             System.out.println(new Date().toString()+" Article");
             preparedStatementForArticle.executeBatch();
             commitChanges();
@@ -241,8 +243,9 @@ public class PostgreSQL {
     public void addBatchForInCollection() throws Exception{
         if(bookTitle == null)    preparedStatementForInCollection.setString(2,"");
         bookTitle = null;
+        counter++;
         preparedStatementForInCollection.addBatch();
-        if(counter %1000 == 0){
+        if(counter %counterLimit == 0){
             System.out.println(new Date().toString()+" InCollections");
             preparedStatementForInCollection.executeBatch();
             commitChanges();
@@ -275,7 +278,8 @@ public class PostgreSQL {
         if(bookTitle == null)preparedStatementForInProceedings.setString(2,null);
         bookTitle = null;
         preparedStatementForInProceedings.addBatch();
-        if(counter %1000 == 0){
+        counter++;
+        if(counter %counterLimit == 0){
             System.out.println(new Date().toString()+" InProceedings");
             preparedStatementForInProceedings.executeBatch();
             commitChanges();
@@ -318,7 +322,8 @@ public class PostgreSQL {
         isbn = null;
         series = null;
         preparedStatementForBooks.addBatch();
-        if(counter %1000 == 0){
+        counter++;
+        if(counter %counterLimit == 0){
             System.out.println(new Date().toString()+" InProceedings");
             preparedStatementForBooks.executeBatch();
             commitChanges();
@@ -387,8 +392,9 @@ public class PostgreSQL {
         volume = -1;
         publishers = null;
         bookTitle = null;
+        counter++;
         preparedStatementForProceedings.addBatch();
-        if(counter %1000 == 0){
+        if(counter %counterLimit == 0){
             System.out.println(new Date().toString()+" Proceedings");
             preparedStatementForProceedings.executeBatch();
             commitChanges();
@@ -421,7 +427,8 @@ public class PostgreSQL {
 
     public void addBatchForPubAuthor() throws Exception{
         preparedStatementForPubAuthor.addBatch();
-        if(counter %1000 == 0){
+        counter++;
+        if(counter % counterLimit == 0){
             System.out.println(new Date().toString()+" PubAuthor");
             preparedStatementForPubAuthor.executeBatch();
             commitChanges();
