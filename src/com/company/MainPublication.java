@@ -9,7 +9,7 @@ import java.io.File;
 /**
  * Created by LENOVO on 24/09/2016.
  */
-public class MainPublicationParser {
+public class MainPublication {
 
 
     public static void main(String args[]){

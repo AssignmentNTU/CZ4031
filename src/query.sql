@@ -134,8 +134,8 @@ SELECT findMostCollaborativeAuthor();
 
 SELECT articleview.AUTHOR_NAME
 FROM (pubview NATURAL JOIN ARTICLE) AS articleview
-WHERE articleview.year > 2011 AND articleview.pubkey LIKE 'conf%'
-AND articleview.journal IS NOT NULL AND articleview.title LIKE '%data%'
+WHERE articleview.year > 2011 AND ( articleview.pubkey LIKE 'journal%' OR articleview.pubkey LIKE 'conf%')
+AND journal IS NOT NULL AND articleview.title LIKE '%Data%'
 GROUP BY articleview.AUTHOR_NAME
 ORDER BY COUNT(*) DESC
 LIMIT 10;
@@ -148,3 +148,9 @@ WHERE YEAR > 2010;
 --9
 SELECT *
 FROM book JOIN publication ON book.pubkey = publication.pubkey;
+
+
+--9.1
+SELECT *
+FROM (book NATURAL JOIN pubauthor NATURAL JOIN author)
+WHERE ISBN is null;
